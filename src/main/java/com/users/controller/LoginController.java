@@ -1,6 +1,10 @@
 package com.users.controller;
 
+import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,9 @@ public class LoginController {
 	
 	private static Logger logger = Logger.getLogger(LoginController.class);
 	
+	@Autowired
+	public UserService userService;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String init(Model model) {
 		model.addAttribute("msg", "Please Enter Your Login Details");
@@ -34,10 +41,7 @@ public class LoginController {
 	public String submit(Model model, @ModelAttribute("loginBean") LoginBean loginBean) {
 		if (loginBean != null && loginBean.getUserName() != null & loginBean.getPassword() != null) {
 			String userName= loginBean.getUserName();
-			AbstractApplicationContext context = new AnnotationConfigApplicationContext(DataConnectionService.class);
-			UserService usrSvc = (UserService) context.getBean("userService");
-			Users userDetail =usrSvc.getUser(userName);
-			context.close();
+			Users userDetail =userService.getUser(userName);
 			if (loginBean.getPassword().equals(userDetail.getPassword())) {
 				model.addAttribute("msg", userDetail.getPassword());
 				logger.info("success");
