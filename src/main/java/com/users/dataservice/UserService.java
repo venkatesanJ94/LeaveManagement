@@ -24,4 +24,11 @@ public class UserService {
 		return userDao.get(username);
 	}
 
+	public boolean insertUser(String username, String password, String emailID) {
+		int status=userDao.insert(username, password, emailID);
+		if(status == 0) {
+			return false;
+		}
+		return true;
+	}
 }

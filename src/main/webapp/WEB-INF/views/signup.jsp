@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Spring Login Form</title>
+<title>Spring Signup Form</title>
 </head>
 <body>
-	<form:form name="submitForm" modelAttribute="loginBean" method="POST">
+	<form:form id="signupForm" modelAttribute="signUpBean" action = "signupprocess" method="POST">
 
 		<div align="center">
 			<table>
@@ -21,8 +21,12 @@
 					<td><input type="password" name="password" /></td>
 				</tr>
 				<tr>
+					<td>EmailID</td>
+					<td><input type="text" name="emailID" /></td>
+				</tr>
+				<tr>
 					<td></td>
-					<td><input type="submit" value="Submit" /></td>
+					<td><input type="submit" value="register" /></td>
 				</tr>
 			</table>
 			<div style="color: red">${error}</div>

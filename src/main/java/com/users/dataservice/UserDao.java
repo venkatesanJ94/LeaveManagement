@@ -29,5 +29,12 @@ public class UserDao {
 	 
 	        return user;
 	    }
+	 
+	 public int insert(String username, String password, String emailID) {
+		 int status= jdbcTemplate.update("INSERT INTO USERS(USERNAME,PASSWORD,USERLEVEL,EMAILID) VALUES(?,?,?,?) ",
+	            new Object[] { username, password,"U",emailID});
+	 
+	        return status;
+	    }
 
 }

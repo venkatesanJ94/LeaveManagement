@@ -3,7 +3,7 @@ package com.users.controller;
 import lombok.Data;
 
 @Data
-public class LoginBean {
+public class SignUpBean {
 
 	private String userName;
 	private String password;

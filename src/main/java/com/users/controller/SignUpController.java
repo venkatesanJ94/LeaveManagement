@@ -2,6 +2,9 @@ package com.users.controller;
 
 import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.users.dataservice.UserService;
 import com.users.model.Users;
@@ -23,37 +27,38 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-public class LoginController {
+public class SignUpController {
 	
-	private static Logger logger = Logger.getLogger(LoginController.class);
+	private static Logger logger = Logger.getLogger(SignUpController.class);
 	
 	@Autowired
 	public UserService userService;
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String init(Model model) {
-		model.addAttribute("msg", "Please Enter Your Login Details");
-		logger.info("Please Enter Your Login Details");
-		return "login";
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signUp(Model model) {
+		model.addAttribute("msg", "Please fill details");
+		logger.info("Please fill details");
+		return "signup";
 	}
-	
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String submit(Model model, @ModelAttribute("loginBean") LoginBean loginBean) {
-		if (loginBean != null && loginBean.getUserName() != null & loginBean.getPassword() != null) {
-			String userName= loginBean.getUserName();
-			Users userDetail =userService.getUser(userName);
-			if (loginBean.getPassword().equals(userDetail.getPassword())) {
-				model.addAttribute("msg", userDetail.getPassword());
+	@RequestMapping(value="signupprocess", method = RequestMethod.POST)
+	public String register(Model model, @ModelAttribute("signUpBean") SignUpBean signUpBean) {
+		if (signUpBean != null && signUpBean.getUserName() != null && signUpBean.getPassword() != null && signUpBean.getEmailID() !=null) {
+			String userName= signUpBean.getUserName();
+			String password = signUpBean.getPassword();
+			String emailId = signUpBean.getEmailID();
+			boolean status=userService.insertUser(userName, password, emailId);
+			if (status) {
+				model.addAttribute("msg", "Successfully inserted.");
 				logger.info("success");
 				return "success";
 			} else {
 				model.addAttribute("error", "Invalid Details");
-				return "login";
+				return "signup";
 			}
 		} else {
 			model.addAttribute("error", "Please enter Details");
-			return "login";
+			return "signup";
 		}
 	}
 	
